@@ -7,7 +7,6 @@ export default function Admin() {
   const [rows, setRows] = useState([])
   const [q, setQ] = useState('')
   const [err, setErr] = useState('')
-  const [u, setU] = useState('')
   const [p, setP] = useState('')
 
   const load = () => listRes().then(setRows).catch(e => setErr(e.message))
@@ -21,24 +20,39 @@ export default function Admin() {
 
   const login = async (e) => {
     e.preventDefault()
-    try { await adminLogin(u, p); setOk(true); setErr('') } catch (x) { setErr(x.message) }
+    try { 
+      await adminLogin(p) 
+      setOk(true); 
+      setErr('') 
+    } catch (x) { 
+      setErr(x.message) 
+    }
   }
 
+  // --- LOGIN SCREEN ---
   if (!ok) return (
-    <section className="sec dark adm">
+    <section className="adm" style={{ display: 'grid', placeItems: 'center', paddingTop: '100px' }}>
       <Reveal>
-        <form className="card form" onSubmit={login}>
+        <form className="login-card" onSubmit={login}>
           <h3>Couple Login</h3>
-          {!demo && <label>Email<input type="email" value={u} onChange={e => setU(e.target.value)} /></label>}
-          <label>{demo ? 'Passcode' : 'Password'}<input type="password" value={p} onChange={e => setP(e.target.value)} /></label>
+          <label>
+            Enter Password
+            <input 
+              type="password" 
+              value={p} 
+              onChange={e => setP(e.target.value)} 
+              placeholder="••••••••"
+              required 
+            />
+          </label>
           {err && <p className="err">{err}</p>}
           <button className="btn">Sign in</button>
         </form>
       </Reveal>
-      <footer><a href="#/">← Back to invitation</a></footer>
     </section>
   )
 
+  // --- DASHBOARD SCREEN ---
   const tot = (k) => rows.filter(r => r[k]).reduce((a, r) => a + r.seats, 0)
   const list = rows.filter(r => (r.name + r.phone + r.code).toLowerCase().includes(q.toLowerCase()))
 
@@ -55,20 +69,23 @@ export default function Admin() {
   }
 
   return (
-    <section className="sec adm">
+    <section className="adm">
       <Reveal><h2>Guest Dashboard</h2></Reveal>
-      {demo && <Reveal delay={80}><p className="lead">Demo mode — data lives in this browser only.</p></Reveal>}
+      {demo && <Reveal delay={80}><p className="lead" style={{ textAlign: 'center', marginBottom: '32px' }}>Demo mode — data lives in this browser only.</p></Reveal>}
+      
       <div className="stats">
         <Reveal delay={0}><div><b>{rows.length}</b>Bookings</div></Reveal>
         <Reveal delay={100}><div><b>{tot('traditional')}/{CAP}</b>Traditional seats</div></Reveal>
         <Reveal delay={200}><div><b>{Math.max(0, CAP - tot('traditional'))}</b>Seats left</div></Reveal>
       </div>
+
       <div className="tools">
         <input placeholder="Search name, phone or code" value={q} onChange={e => setQ(e.target.value)} />
         <button className="btn sm" onClick={csv}>Export CSV</button>
         <button className="btn sm" onClick={load}>Refresh</button>
-        <button className="btn sm" onClick={() => { adminLogout(); setOk(false) }}>Sign out</button>
+        <button className="btn sm" style={{ background: '#E74C3C' }} onClick={() => { adminLogout(); setOk(false) }}>Sign out</button>
       </div>
+
       <div className="tbl">
         <table>
           <thead>
@@ -88,9 +105,8 @@ export default function Admin() {
             ))}
           </tbody>
         </table>
-        {!list.length && <p className="lead">No bookings yet.</p>}
+        {!list.length && <p className="lead" style={{ padding: '40px' }}>No bookings yet.</p>}
       </div>
-      <footer><a href="#/">← Back to invitation</a></footer>
     </section>
   )
 }
