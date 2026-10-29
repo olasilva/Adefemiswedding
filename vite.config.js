@@ -3,5 +3,5 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/wedding/', // Add this if hosting on GitHub pages in a subfolder! If Netlify/Vercel, leave as '/'
+  base: '/wedding/', // 👈 Add this line! (Keep the trailing slash)
 })
