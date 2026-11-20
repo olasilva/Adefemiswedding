@@ -1,12 +1,22 @@
-import { useState } from 'react'
-import { reserve, counts } from '../store'
+import { useEffect, useState } from 'react'
+import { reserve, hasEventAccess, eventGuestName } from '../store'
 import Reveal from '../components/Reveal'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function RSVP() {
-  const [f, setF] = useState({ name: '', phone: '', email: '', seats: 1, traditional: true, note: '' })
+  const [authorized, setAuthorized] = useState(hasEventAccess)
+  const [f, setF] = useState({ name: eventGuestName(), phone: '', email: '', seats: 1, traditional: true, note: '' })
   const [err, setErr] = useState(''), [code, setCode] = useState(''), [busy, setBusy] = useState(false)
   const set = (k, v) => setF(p => ({ ...p, [k]: v }))
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!hasEventAccess()) {
+      navigate('/access', { replace: true })
+      return
+    }
+    setAuthorized(true)
+  }, [navigate])
 
   const submit = async (e) => {
     e.preventDefault(); setErr('')
@@ -16,13 +26,28 @@ export default function RSVP() {
     setBusy(false)
   }
 
+  if (!authorized) return null
+
   return (
     <section className="sec dark" style={{ minHeight: '100vh', paddingTop: '160px' }}>
+      
+      {/* Wedding Invitation Image */}
+      <Reveal>
+        <div className="invite-frame">
+          <img
+            src="/invitation.jpg"
+            alt="Wedding Invitation"
+            className="invite-img"
+          />
+        </div>
+      </Reveal>
+
       <Reveal><h2>Reserve Your Seat</h2></Reveal>
+      
       {code ? (
         <Reveal delay={100}>
           <div className="card ok">
-            <h3>You're on the list! 🎉</h3>
+            <h3>You're on the list! </h3>
             <p>Your reservation code</p>
             <div className="code">{code}</div>
             <p>Please screenshot this code and present it at the entrance.</p>
@@ -32,7 +57,7 @@ export default function RSVP() {
       ) : (
         <Reveal delay={100}>
           <form className="card form" onSubmit={submit}>
-            <label>Full name<input required value={f.name} onChange={e => set('name', e.target.value)} /></label>
+            <label>Full name<input required value={f.name} readOnly /></label>
             <label>Phone / WhatsApp<input required type="tel" value={f.phone} onChange={e => set('phone', e.target.value)} /></label>
             <label>Email (optional)<input type="email" value={f.email} onChange={e => set('email', e.target.value)} /></label>
             <label>Number of seats (including you)

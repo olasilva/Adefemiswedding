@@ -4,7 +4,7 @@ import Reveal from '../components/Reveal'
 export default function Details() {
   return (
     <>
-      <section className="sec ivory" style={{ paddingTop: '160px' }}>
+      <section className="sec details-intro" style={{ paddingTop: '160px' }}>
         <Reveal><h2>Join us as we say “I do”</h2></Reveal>
         <Reveal delay={100}>
           <p className="lead">
@@ -30,14 +30,27 @@ export default function Details() {
       <section className="sec" style={{ background: '#fff' }}>
         <Reveal><h2>The Celebration</h2></Reveal>
         
-        <div className="cards">
+        <div className="cards" style={{ justifyContent: 'center' }}>
           <Reveal delay={100}>
-            <div className="card">
-              <h3>Traditional Wedding</h3>
-              <p style={{ color: 'var(--accent)', fontWeight: 600, marginBottom: '16px' }}>
-                Monday, 29 March 2027
-              </p>
-              <p>Venue to be announced</p>
+            {/* Replaced the card text with the invitation image */}
+            <div style={{ 
+              display: 'flex', 
+              flexDirection: 'column', 
+              alignItems: 'center',
+              marginTop: '24px'
+            }}>
+              <img 
+                src="/invitation.jpg" 
+                alt="Traditional Wedding Invitation" 
+                style={{
+                  width: '100%',
+                  maxWidth: '550px',
+                  height: 'auto',
+                  borderRadius: '12px',
+                  boxShadow: '0 15px 35px rgba(0,0,0,0.1)',
+                  border: '1px solid rgba(0,0,0,0.05)'
+                }}
+              />
             </div>
           </Reveal>
         </div>
@@ -60,7 +73,7 @@ export default function Details() {
         </div>
         
         <div style={{ marginTop: '80px' }}>
-          <Link to="/rsvp" className="btn" style={{ textDecoration: 'none', display: 'inline-block' }}>
+          <Link to="/access" className="btn" style={{ textDecoration: 'none', display: 'inline-block' }}>
             Proceed to RSVP
           </Link>
         </div>

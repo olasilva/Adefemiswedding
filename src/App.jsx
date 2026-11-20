@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import Admin from './pages/Admin'
 import Details from './pages/Details'
 import RSVP from './pages/RSVP'
+import Access from './pages/Access'
 import './index.css'
 
 export default function App() {
@@ -14,6 +15,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/details" element={<Details />} />
+        <Route path="/access" element={<Access />} />
         <Route path="/rsvp" element={<RSVP />} />
         <Route path="/admin" element={<Admin />} />
       </Routes>

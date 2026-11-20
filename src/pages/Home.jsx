@@ -23,7 +23,7 @@ export default function Home() {
         
         <Seats c={c} events={C.events} />
         
-        <Link to="/details" className="btn" style={{ textDecoration: 'none', display: 'inline-block' }}>
+        <Link to="/access" className="btn" style={{ textDecoration: 'none', display: 'inline-block' }}>
           Book your seat
         </Link>
       </div>
