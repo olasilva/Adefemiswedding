@@ -88,7 +88,7 @@ export async function removeRes(id) {
 // --- FIXED ADMIN LOGIN ---
 export async function adminLogin(p) {
   // We check against the code you requested
-  if (p !== 'omoaade27') throw new Error('Incorrect password')
+  if (p !== 'omoade27') throw new Error('Incorrect password')
   
   if (!sb) {
     sessionStorage.setItem('adm', '1')
