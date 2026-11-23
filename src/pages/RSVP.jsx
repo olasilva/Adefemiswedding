@@ -42,7 +42,7 @@ export default function RSVP() {
         </div>
       </Reveal>
 
-      <Reveal><h2>Reserve Your Seat</h2></Reveal>
+      <Reveal><h2>Reserve Your Seat 29 March 2027</h2></Reveal>
       
       {code ? (
         <Reveal delay={100}>
